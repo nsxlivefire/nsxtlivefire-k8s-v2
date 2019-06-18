@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: runnsx-ingress
+spec:
+  rules:
+  - host: nsx.livefire.corp.local
+    http:
+      paths:
+      - backend:
+          serviceName: livefire-lb
+          servicePort: 80

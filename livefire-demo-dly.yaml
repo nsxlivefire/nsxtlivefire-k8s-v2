@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: livefire-demo-dly
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: livefire-demo
+  template:
+    metadata:
+      labels:
+        app: livefire-demo
+        version: v1.0
+    spec:
+      containers:
+      - name: livefire-demo
+        image:  livefire-pod:v3
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+

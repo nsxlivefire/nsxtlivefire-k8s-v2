@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: livefire-type-lb
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      tier: web-tier
+  template:
+    metadata:
+      labels:
+        app: runnsx-demo
+        version: v1.0
+        tier: web-tier
+    spec:
+      containers:
+      - name: runnsx-demo
+        image:  runnsx-pod:v2
+        ports:
+        - containerPort: 81
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: livefire-lb
+  labels:
+    app: livefire-lb
+spec:
+  ports:
+  - port: 80
+    targetPort: 81
+    protocol: TCP
+    name: livefire-lb
+  selector:
+    tier: web-tier
+  type: LoadBalancer

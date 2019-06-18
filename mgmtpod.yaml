@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mgmtpod
+spec:
+  containers:
+  - name: mgmtpod
+    image: mgmtpod:v1
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always

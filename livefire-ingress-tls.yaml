@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: livefire-ingress-tls
+spec:
+  tls:
+  - hosts:
+    - demotls.livefire.corp.local
+    secretName: livefire-tls
+  rules:
+  - host: demotls.livefire.corp.local
+    http:
+      paths:
+      - backend:
+          serviceName: livefire-demo-rc
+          servicePort: 80
